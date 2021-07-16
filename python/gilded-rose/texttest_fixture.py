@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
+""" CLI tool to see Gilded Rose in action """
 from __future__ import print_function
 
-from gilded_rose import *
+from gilded_rose import GildedRose, Item
 
 if __name__ == "__main__":
     print ("OMGHAI!")

@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-
+""" The Gilded Rose's stock digital twin system """
 from item_descriptors import find_descriptor
 
-class GildedRose(object):
+# pylint: disable=too-few-public-methods
+
+class GildedRose():
     """ Digital twin of GR's item stock """
     def __init__(self, items):
         self.items = items

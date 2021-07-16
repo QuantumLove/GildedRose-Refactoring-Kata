@@ -6,6 +6,9 @@
 special_item_descriptors = []
 
 def special_item(descriptor):
+    """ Decorator to register special item descriptors
+        in the global list
+    """
     special_item_descriptors.append(descriptor)
     return descriptor
 
@@ -17,8 +20,8 @@ class GenericDescriptor:
     depreciation_rate = 1
 
     @staticmethod
-    def matches(item):
-        """ Whether this descriptor applies 
+    def matches(item): # pylint: disable=unused-argument
+        """ Whether this descriptor applies
             to the item in question
         """
         return True
@@ -43,6 +46,7 @@ class GenericDescriptor:
 
 @special_item
 class AgedBrie(GenericDescriptor):
+    """ Aged brie's descriptor """
     depreciation_rate = -1 # This item increases in quality instead of depreciating
 
     @staticmethod
@@ -51,6 +55,7 @@ class AgedBrie(GenericDescriptor):
 
 @special_item
 class Sulfuras(GenericDescriptor):
+    """ Sulfuras descriptor """
     @staticmethod
     def matches(item):
         return item.name == 'Sulfuras, Hand of Ragnaros'
@@ -58,10 +63,11 @@ class Sulfuras(GenericDescriptor):
     @staticmethod
     def age(item):
         """ Sulfuras does not age """
-        pass
+        item.sell_in -= 1
 
 @special_item
 class BackstagePasses(GenericDescriptor):
+    """ Descriptor for the category of BackstagePasses items """
     @staticmethod
     def matches(item):
         return 'Backstage passes' in item.name
@@ -69,7 +75,7 @@ class BackstagePasses(GenericDescriptor):
     @staticmethod
     def update_quality(item):
         if item.sell_in <= 0:
-            # The concert has happened 
+            # The concert has happened
             item.quality = 0
             return
 
@@ -79,8 +85,9 @@ class BackstagePasses(GenericDescriptor):
         if item.sell_in <= 5: # Under 5 days bonus
             item.quality += 1
 
-@special_item 
+@special_item
 class Conjured(GenericDescriptor):
+    """ Descriptor for the category of Conjured items """
     depreciation_rate = 2
 
     @staticmethod
@@ -89,10 +96,10 @@ class Conjured(GenericDescriptor):
 
 def find_descriptor(item):
     """ Identifies if an item is special and, if so,
-    return the descriptor for that item.
-    It assumes that an item can only have one special 
-    description to it.
-    If it is not special, the generic descriptor is returned
+        return the descriptor for that item.
+        It assumes that an item can only have one special
+        description to it.
+        If it is not special, the generic descriptor is returned
     """
     for descriptor in special_item_descriptors:
         if descriptor.matches(item):

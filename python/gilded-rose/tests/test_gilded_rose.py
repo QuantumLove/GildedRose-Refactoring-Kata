@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+""" Tests for the Gilded Rose class """
 from unittest.mock import Mock
 from gilded_rose import GildedRose
 
@@ -14,13 +14,13 @@ def test_gilded_rose_init():
     assert gilded_rose.items[1] is item2
 
 def test_update_quality(mocker):
-    """ Verifies that each item is called 
+    """ Verifies that each item is called
         with the correct descriptor
     """
     items = range(0,3)
-    descriptors = [ Mock(), Mock(), Mock()]
 
-    mock_find_descriptor = mocker.patch('gilded_rose.find_descriptor', side_effect=descriptors)
+    descriptors = [ Mock(), Mock(), Mock()]
+    mocker.patch('gilded_rose.find_descriptor', side_effect=descriptors)
 
     gilded_rose = GildedRose(items)
 
