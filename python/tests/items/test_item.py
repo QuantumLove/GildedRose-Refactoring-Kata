@@ -1,5 +1,7 @@
-from gilded_rose import Item, GildedRose
-from conftest import FOO
+from gilded_rose import Item
+from item_descriptors import GenericDescriptor
+
+FOO = 'FOO'
 
 def test_item_init():
     name = FOO
@@ -11,39 +13,47 @@ def test_item_init():
     assert item.sell_in = sell_in
     assert item.quality = quality
 
-TODO add parameterization to account for edge cases
-def test_item_decreases_quality(mock_gr):
-    start_sell_in = int(mock_gr.items[0].sell_in)
-    start_quality = int(mock_gr.items[0].quality)
-
-    mock_gr.update_quality()
-
-    assert mock_gr.items[0].sell_in == start_sell_in - 1
-    assert mock_gr.items[0].quality == start_quality - 1
-
-TODO add parameterization to account for edge cases
-def test_faster_degrade_after_sell_in_date(mock_gr):
-    mock_gr.items[0].sell_in = 0
-    start_quality = int(mock_gr.items[0].quality)
-
-    mock_gr.update_quality()
-
-    assert mock_gr.items[0].sell_in == 0
-    assert mock_gr.items[0].quality == start_quality - 2
-
-parameterized for different item types
-def test_quality_is_capped(item_name, start_quality, start_sell_in)
-    TODO after code
-
-    mock_gr.update_quality()
-
-    # Maximum quality is 50
-    assert mock_gr.items[0].quality == 50
-
-parameterized for different item types and qualities and sell ins
-def test_quality_cant_drop_bellow_0(item_name, start_quality, start_sell_in):
-    TODO after code
-
-    mock_gr.update_quality()
-
-    assert mock_gr.items[0].quality == 0
+test_data = {
+    'test_quality_drops': (
+        Item(FOO, 10, 5),
+        9,
+        4,
+    ),
+    'test_quality_drops_last_day': (
+        Item(FOO, 10, 2),
+        9,
+        1,
+    ),
+    'test_faster_drop_after_sell_in_1': (
+        Item(FOO, 10, 1),
+        8,
+        0,
+    ),
+    'test_faster_drop_after_sell_in_0': (
+        Item(FOO, 10, 0),
+        8,
+        -1,
+    ),
+    'test_faster_drop_after_sell_in_-1': (
+        Item(FOO, 10, -1),
+        8,
+        -2,
+    ),
+    'test_quality_cannot_drop_bellow_0': (
+        Item(FOO, 0, -1),
+        0,
+        -2,
+    ),
+    'test_quality_capped_at_50': (
+        Item(FOO, 100, 10),
+        50,
+        9,
+    ),
+}
+@pytest.mark.parametrize("item,end_sell_in,end_quality",
+                         test_data.values(), ids=test_data.keys())
+def test_item_decreases_quality(item, end_sell_in, end_quality):
+    GenericDescriptor.age(item)
+    
+    assert item.sell_in == end_sell_in
+    assert item.quality == end_quality

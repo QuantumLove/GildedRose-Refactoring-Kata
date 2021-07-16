@@ -1,3 +1,8 @@
+"""
+    Item descriptors describe the behavior of the items.
+    This module includes descriptors for all types of items
+    sold by the Gilded Rose
+"""
 special_item_descriptors = []
 
 def special_item(descriptor):
@@ -18,10 +23,10 @@ class GenericDescriptor:
         """
         return True
 
-    @staticmethod
-    def update_quality(item):
+    @classmethod
+    def update_quality(cls, item):
         """ Defines how the quality changes each iteration """
-        depreciation = self.depreciation_rate
+        depreciation = cls.depreciation_rate
         if item.sell_in <= 0:
             depreciation = depreciation * 2
 
@@ -59,7 +64,7 @@ class Sulfuras(GenericDescriptor):
 class BackstagePasses(GenericDescriptor):
     @staticmethod
     def matches(item):
-        return item.name == 'Backstage passes to a TAFKAL80ETC concert'
+        return 'Backstage passes' in item.name
 
     @staticmethod
     def update_quality(item):
@@ -74,7 +79,7 @@ class BackstagePasses(GenericDescriptor):
         if item.sell_in <= 5: # Under 5 days bonus
             item.quality += 1
 
-@spacial_item 
+@special_item 
 class Conjured(GenericDescriptor):
     depreciation_rate = 2
 
@@ -82,7 +87,13 @@ class Conjured(GenericDescriptor):
     def matches(item):
         return 'Conjured' in item.name
 
-def find_descriptor(item)
+def find_descriptor(item):
+    """ Identifies if an item is special and, if so,
+    return the descriptor for that item.
+    It assumes that an item can only have one special 
+    description to it.
+    If it is not special, the generic descriptor is returned
+    """
     for descriptor in special_item_descriptors:
         if descriptor.matches(item):
             return descriptor
