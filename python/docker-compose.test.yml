@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  gilded-rose-tests:
+    build:
+      context: ${PWD}
+      dockerfile: test.Dockerfile
+    image: gilded-rose:test

@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+    gilded-rose:
+        build:
+          context: ${PWD}
+          dockerfile: Dockerfile
+        image: gilded-rose
+        volumes:
+            - ${PWD}/gilded-rose:/gilded-rose

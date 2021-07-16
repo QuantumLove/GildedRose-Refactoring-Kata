@@ -1,3 +1,4 @@
+import pytest
 from gilded_rose import Item
 from item_descriptors import GenericDescriptor
 
@@ -9,9 +10,9 @@ def test_item_init():
     quality = 10
     item = Item(name, sell_in, quality)
 
-    assert item.name = name
-    assert item.sell_in = sell_in
-    assert item.quality = quality
+    assert item.name == name
+    assert item.sell_in == sell_in
+    assert item.quality == quality
 
 test_data = {
     'test_quality_drops': (
