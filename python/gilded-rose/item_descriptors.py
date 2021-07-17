@@ -79,10 +79,11 @@ class BackstagePasses(GenericDescriptor):
             item.quality = 0
             return
 
-        item.quality += 1
-        if item.sell_in <= 10: # Under 10 days bonus
-            item.quality += 1
         if item.sell_in <= 5: # Under 5 days bonus
+            item.quality += 3
+        elif item.sell_in <= 10: # Under 10 days bonus
+            item.quality += 2
+        else:
             item.quality += 1
 
 @special_item
